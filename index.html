@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج توليد الأفكار الريادية - اختيار من متعدد</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .author-credit {
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .form-content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            display: inline-block;
+        }
+
+        .section-description {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        .question-group {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+        }
+
+        .question-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option-item:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .option-item input[type="radio"], .option-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .option-item.selected {
+            border-color: #2ecc71;
+            background: #d5f4e6;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .option-emoji {
+            font-size: 1.5em;
+            margin-left: 10px;
+        }
+
+        .true-false-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .tf-option {
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            border: 3px solid #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .tf-option.true {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .tf-option.false {
+            background: #fadbd8;
+            color: #e74c3c;
+        }
+
+        .tf-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .tf-option.selected.true {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+        }
+
+        .tf-option.selected.false {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .conditional-input {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #bdc3c7;
+            display: none;
+        }
+
+        .conditional-input.show {
+            display: block;
+            animation: slideDown 0.3s ease-in;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .conditional-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .section-counter {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .result-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .prompt-output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .copy-btn {
+            background: #27ae60;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #229954;
+        }
+
+        .social-media-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .social-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-link.tiktok {
+            background: linear-gradient(135deg, #ff0050, #ff4081);
+        }
+
+        .social-link.twitter {
+            background: linear-gradient(135deg, #1da1f2, #0d8bd9);
+        }
+
+        .social-link.youtube {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+        }
+
+        .success-message {
+            background: #d5f4e6;
+            color: #27ae60;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .multi-select-note {
+            background: #e8f4fd;
+            color: #2980b9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            border-left: 4px solid #3498db;
+        }
+
+        .validation-error {
+            background: #fadbd8;
+            color: #e74c3c;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            border-left: 4px solid #e74c3c;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-content {
+                padding: 30px 20px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .true-false-container {
+                grid-template-columns: 1fr;
+            }
+
+            .result-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .social-media-section {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 نموذج توليد الأفكار الريادية</h1>
+            <p>اكتشف فكرتك الريادية من خلال اختيارات بسيطة وذكية</p>
+            <div class="author-credit">إعداد: فهد بن سعيد القحطاني</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="form-content">
+            <form id="entrepreneurshipForm">
+                <!-- القسم الأول: الملف الشخصي -->
+                <div class="section active" data-section="1">
+                    <h2 class="section-title">👤 الملف الشخصي</h2>
+                    <p class="section-description">دعنا نتعرف على اهتماماتك ومهاراتك</p>
+                    
+                    <div class="question-group">
+                        <div class="question-title">ما هو مجال دراستك أو اهتمامك الأكاديمي؟</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'technology')">
+                                <input type="radio" name="academic_field" value="technology">
+                                <span class="option-emoji">💻</span>
+                                <span class="option-text">التقنية والحاسوب</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'business')">
+                                <input type="radio" name="academic_field" value="business">
+                                <span class="option-emoji">📊</span>
+                                <span class="option-text">إدارة الأعمال والاقتصاد</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'health')">
+                                <input type="radio" name="academic_field" value="health">
+                                <span class="option-emoji">🏥</span>
+                                <span class="option-text">الطب والعلوم الصحية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'engineering')">
+                                <input type="radio" name="academic_field" value="engineering">
+                                <span class="option-emoji">⚙️</span>
+                                <span class="option-text">الهندسة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'education')">
+                                <input type="radio" name="academic_field" value="education">
+                                <span class="option-emoji">📚</span>
+                                <span class="option-text">التعليم والتربية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'arts')">
+                                <input type="radio" name="academic_field" value="arts">
+                                <span class="option-emoji">🎨</span>
+                                <span class="option-text">الفنون والتصميم</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'social')">
+                                <input type="radio" name="academic_field" value="social">
+                                <span class="option-emoji">🤝</span>
+                                <span class="option-text">العلوم الاجتماعية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'academic_field', 'other')">
+                                <input type="radio" name="academic_field" value="other">
+                                <span class="option-emoji">🔍</span>
+                                <span class="option-text">مجال آخر</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="academic_field_other">
+                            <div class="conditional-label">حدد المجال:</div>
+                            <input type="text" class="text-input" name="academic_field_other_text" placeholder="اكتب مجال دراستك أو اهتمامك...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">ما هي أبرز نقاط قوتك؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'communication')">
+                                <input type="checkbox" name="strengths" value="communication">
+                                <span class="option-emoji">🗣️</span>
+                                <span class="option-text">التواصل والإقناع</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'creativity')">
+                                <input type="checkbox" name="strengths" value="creativity">
+                                <span class="option-emoji">💡</span>
+                                <span class="option-text">الإبداع والابتكار</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'technical')">
+                                <input type="checkbox" name="strengths" value="technical">
+                                <span class="option-emoji">⚡</span>
+                                <span class="option-text">المهارات التقنية</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'leadership')">
+                                <input type="checkbox" name="strengths" value="leadership">
+                                <span class="option-emoji">👑</span>
+                                <span class="option-text">القيادة والتنظيم</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'analysis')">
+                                <input type="checkbox" name="strengths" value="analysis">
+                                <span class="option-emoji">📈</span>
+                                <span class="option-text">التحليل وحل المشكلات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'marketing')">
+                                <input type="checkbox" name="strengths" value="marketing">
+                                <span class="option-emoji">📢</span>
+                                <span class="option-text">التسويق والمبيعات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'strengths', 'other')">
+                                <input type="checkbox" name="strengths" value="other">
+                                <span class="option-emoji">✨</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="strengths_other">
+                            <div class="conditional-label">حدد نقاط القوة الأخرى:</div>
+                            <input type="text" class="text-input" name="strengths_other_text" placeholder="اكتب نقاط قوتك الأخرى...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل لديك خبرة سابقة في العمل أو المشاريع؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'work_experience', 'true')">
+                                <div>✅ نعم</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">لدي خبرة عملية</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'work_experience', 'false')">
+                                <div>❌ لا</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">لا توجد خبرة سابقة</div>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="work_experience_details">
+                            <div class="conditional-label">اذكرها:</div>
+                            <input type="text" class="text-input" name="work_experience_text" placeholder="اذكر خبراتك السابقة...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القسم الثاني: الحاجات والتحديات -->
+                <div class="section" data-section="2">
+                    <h2 class="section-title">🎯 الحاجات والتحديات</h2>
+                    <p class="section-description">ما هي أبرز الحاجات التي تلاحظها في محيطك؟</p>
+                    
+                    <div class="question-group">
+                        <div class="question-title">ما هي أشد الحاجات التي تواجهها في حياتك اليومية؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'transportation')">
+                                <input type="checkbox" name="daily_needs" value="transportation">
+                                <span class="option-emoji">🚗</span>
+                                <span class="option-text">المواصلات والتنقل</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'food')">
+                                <input type="checkbox" name="daily_needs" value="food">
+                                <span class="option-emoji">🍽️</span>
+                                <span class="option-text">الطعام الصحي والمناسب</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'study')">
+                                <input type="checkbox" name="daily_needs" value="study">
+                                <span class="option-emoji">📖</span>
+                                <span class="option-text">الدراسة والتعلم</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'shopping')">
+                                <input type="checkbox" name="daily_needs" value="shopping">
+                                <span class="option-emoji">🛒</span>
+                                <span class="option-text">التسوق والحصول على الاحتياجات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'health')">
+                                <input type="checkbox" name="daily_needs" value="health">
+                                <span class="option-emoji">💪</span>
+                                <span class="option-text">الصحة واللياقة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'entertainment')">
+                                <input type="checkbox" name="daily_needs" value="entertainment">
+                                <span class="option-emoji">🎮</span>
+                                <span class="option-text">الترفيه والأنشطة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'financial')">
+                                <input type="checkbox" name="daily_needs" value="financial">
+                                <span class="option-emoji">💰</span>
+                                <span class="option-text">إدارة المال والمصروف</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'social')">
+                                <input type="checkbox" name="daily_needs" value="social">
+                                <span class="option-emoji">👥</span>
+                                <span class="option-text">التواصل الاجتماعي</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'daily_needs', 'other')">
+                                <input type="checkbox" name="daily_needs" value="other">
+                                <span class="option-emoji">🔍</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="daily_needs_other">
+                            <div class="conditional-label">حدد الحاجات الأخرى:</div>
+                            <input type="text" class="text-input" name="daily_needs_other_text" placeholder="اكتب الحاجات الأخرى...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل تعتقد أن هذه الحاجة تؤثر على الآخرين أيضاً؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'need_affects_others', 'true')">
+                                <div>✅ نعم</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">حاجة عامة يعاني منها الكثيرون</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'need_affects_others', 'false')">
+                                <div>❌ لا</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">حاجة شخصية خاصة بي</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">ما هي أبرز الحاجات في المجتمع السعودي التي تهمك؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'education_quality')">
+                                <input type="checkbox" name="society_needs" value="education_quality">
+                                <span class="option-emoji">🎓</span>
+                                <span class="option-text">جودة التعليم</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'job_opportunities')">
+                                <input type="checkbox" name="society_needs" value="job_opportunities">
+                                <span class="option-emoji">💼</span>
+                                <span class="option-text">فرص العمل للشباب</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'healthcare_access')">
+                                <input type="checkbox" name="society_needs" value="healthcare_access">
+                                <span class="option-emoji">🏥</span>
+                                <span class="option-text">سهولة الوصول للخدمات الصحية</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'transportation')">
+                                <input type="checkbox" name="society_needs" value="transportation">
+                                <span class="option-emoji">🚌</span>
+                                <span class="option-text">المواصلات العامة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'environment')">
+                                <input type="checkbox" name="society_needs" value="environment">
+                                <span class="option-emoji">🌱</span>
+                                <span class="option-text">البيئة والاستدامة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'digital_literacy')">
+                                <input type="checkbox" name="society_needs" value="digital_literacy">
+                                <span class="option-emoji">📱</span>
+                                <span class="option-text">الثقافة الرقمية</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'society_needs', 'other')">
+                                <input type="checkbox" name="society_needs" value="other">
+                                <span class="option-emoji">🔍</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="society_needs_other">
+                            <div class="conditional-label">حدد الحاجات المجتمعية الأخرى:</div>
+                            <input type="text" class="text-input" name="society_needs_other_text" placeholder="اكتب الحاجات المجتمعية الأخرى...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القسم الثالث: الاهتمامات والفرص -->
+                <div class="section" data-section="3">
+                    <h2 class="section-title">💡 الاهتمامات والفرص</h2>
+                    <p class="section-description">ما الذي يثير اهتمامك ويحفزك؟</p>
+                    
+                    <div class="question-group">
+                        <div class="question-title">أي من هذه المجالات يثير شغفك أكثر؟</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'technology')">
+                                <input type="radio" name="passion_field" value="technology">
+                                <span class="option-emoji">🤖</span>
+                                <span class="option-text">التقنية والذكاء الاصطناعي</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'health_fitness')">
+                                <input type="radio" name="passion_field" value="health_fitness">
+                                <span class="option-emoji">🏃</span>
+                                <span class="option-text">الصحة واللياقة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'education')">
+                                <input type="radio" name="passion_field" value="education">
+                                <span class="option-emoji">📚</span>
+                                <span class="option-text">التعليم وتطوير المهارات</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'environment')">
+                                <input type="radio" name="passion_field" value="environment">
+                                <span class="option-emoji">🌍</span>
+                                <span class="option-text">البيئة والاستدامة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'entertainment')">
+                                <input type="radio" name="passion_field" value="entertainment">
+                                <span class="option-emoji">🎭</span>
+                                <span class="option-text">الترفيه والثقافة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'social_impact')">
+                                <input type="radio" name="passion_field" value="social_impact">
+                                <span class="option-emoji">❤️</span>
+                                <span class="option-text">الأثر الاجتماعي والخير</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'business')">
+                                <input type="radio" name="passion_field" value="business">
+                                <span class="option-emoji">💼</span>
+                                <span class="option-text">الأعمال والتجارة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'food')">
+                                <input type="radio" name="passion_field" value="food">
+                                <span class="option-emoji">🍽️</span>
+                                <span class="option-text">الطعام والضيافة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'passion_field', 'other')">
+                                <input type="radio" name="passion_field" value="other">
+                                <span class="option-emoji">✨</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="passion_field_other">
+                            <div class="conditional-label">حدد مجال الشغف:</div>
+                            <input type="text" class="text-input" name="passion_field_other_text" placeholder="اكتب مجال شغفك...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل تتابع الشركات الناشئة والمشاريع الريادية؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'follows_startups', 'true')">
+                                <div>✅ نعم</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">أتابع أخبار الشركات الناشئة</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'follows_startups', 'false')">
+                                <div>❌ لا</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">لا أتابع هذا المجال كثيراً</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">أي من هذه التقنيات الحديثة تجدها مثيرة للاهتمام؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'ai')">
+                                <input type="checkbox" name="interesting_tech" value="ai">
+                                <span class="option-emoji">🤖</span>
+                                <span class="option-text">الذكاء الاصطناعي</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'mobile_apps')">
+                                <input type="checkbox" name="interesting_tech" value="mobile_apps">
+                                <span class="option-emoji">📱</span>
+                                <span class="option-text">تطبيقات الهاتف</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'ecommerce')">
+                                <input type="checkbox" name="interesting_tech" value="ecommerce">
+                                <span class="option-emoji">🛒</span>
+                                <span class="option-text">التجارة الإلكترونية</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'iot')">
+                                <input type="checkbox" name="interesting_tech" value="iot">
+                                <span class="option-emoji">🔗</span>
+                                <span class="option-text">إنترنت الأشياء</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'vr_ar')">
+                                <input type="checkbox" name="interesting_tech" value="vr_ar">
+                                <span class="option-emoji">🥽</span>
+                                <span class="option-text">الواقع المعزز والافتراضي</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'blockchain')">
+                                <input type="checkbox" name="interesting_tech" value="blockchain">
+                                <span class="option-emoji">⛓️</span>
+                                <span class="option-text">البلوك تشين</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'interesting_tech', 'other')">
+                                <input type="checkbox" name="interesting_tech" value="other">
+                                <span class="option-emoji">🔬</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="interesting_tech_other">
+                            <div class="conditional-label">حدد التقنيات الأخرى:</div>
+                            <input type="text" class="text-input" name="interesting_tech_other_text" placeholder="اكتب التقنيات المثيرة الأخرى...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القسم الرابع: نموذج العمل والهدف -->
+                <div class="section" data-section="4">
+                    <h2 class="section-title">🎯 نموذج العمل والهدف</h2>
+                    <p class="section-description">كيف تتخيل مشروعك المستقبلي؟</p>
+                    
+                    <div class="question-group">
+                        <div class="question-title">من هي الفئة التي تود خدمتها أكثر؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'students')">
+                                <input type="checkbox" name="target_audience" value="students">
+                                <span class="option-emoji">🎓</span>
+                                <span class="option-text">الطلاب والشباب</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'families')">
+                                <input type="checkbox" name="target_audience" value="families">
+                                <span class="option-emoji">👨‍👩‍👧‍👦</span>
+                                <span class="option-text">العائلات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'professionals')">
+                                <input type="checkbox" name="target_audience" value="professionals">
+                                <span class="option-emoji">💼</span>
+                                <span class="option-text">المهنيون وأصحاب الأعمال</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'elderly')">
+                                <input type="checkbox" name="target_audience" value="elderly">
+                                <span class="option-emoji">👴</span>
+                                <span class="option-text">كبار السن</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'general_public')">
+                                <input type="checkbox" name="target_audience" value="general_public">
+                                <span class="option-emoji">🌍</span>
+                                <span class="option-text">عموم الناس</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'businesses')">
+                                <input type="checkbox" name="target_audience" value="businesses">
+                                <span class="option-emoji">🏢</span>
+                                <span class="option-text">الشركات والمؤسسات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'target_audience', 'other')">
+                                <input type="checkbox" name="target_audience" value="other">
+                                <span class="option-emoji">👥</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="target_audience_other">
+                            <div class="conditional-label">حدد الفئة المستهدفة:</div>
+                            <input type="text" class="text-input" name="target_audience_other_text" placeholder="اكتب الفئة التي تود خدمتها...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">ما هو نوع الحل الذي تفضل تقديمه؟</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'digital_service')">
+                                <input type="radio" name="solution_type" value="digital_service">
+                                <span class="option-emoji">💻</span>
+                                <span class="option-text">خدمة رقمية (تطبيق/موقع)</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'physical_product')">
+                                <input type="radio" name="solution_type" value="physical_product">
+                                <span class="option-emoji">📦</span>
+                                <span class="option-text">منتج مادي</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'consulting_service')">
+                                <input type="radio" name="solution_type" value="consulting_service">
+                                <span class="option-emoji">🤝</span>
+                                <span class="option-text">خدمة استشارية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'marketplace')">
+                                <input type="radio" name="solution_type" value="marketplace">
+                                <span class="option-emoji">🏪</span>
+                                <span class="option-text">منصة تجمع البائعين والمشترين</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'educational_content')">
+                                <input type="radio" name="solution_type" value="educational_content">
+                                <span class="option-emoji">📚</span>
+                                <span class="option-text">محتوى تعليمي</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'community_platform')">
+                                <input type="radio" name="solution_type" value="community_platform">
+                                <span class="option-emoji">👥</span>
+                                <span class="option-text">منصة مجتمعية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'solution_type', 'other')">
+                                <input type="radio" name="solution_type" value="other">
+                                <span class="option-emoji">🔧</span>
+                                <span class="option-text">أخرى</span>
+                            </div>
+                        </div>
+                        <div class="conditional-input" id="solution_type_other">
+                            <div class="conditional-label">حدد نوع الحل:</div>
+                            <input type="text" class="text-input" name="solution_type_other_text" placeholder="اكتب نوع الحل الذي تفضله...">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">كيف تفضل تحقيق الدخل من مشروعك؟ (يمكن اختيار أكثر من خيار)</div>
+                        <div class="multi-select-note">💡 يمكنك اختيار عدة خيارات</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'subscription')">
+                                <input type="checkbox" name="revenue_model" value="subscription">
+                                <span class="option-emoji">💳</span>
+                                <span class="option-text">اشتراك شهري/سنوي</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'one_time_payment')">
+                                <input type="checkbox" name="revenue_model" value="one_time_payment">
+                                <span class="option-emoji">💰</span>
+                                <span class="option-text">دفعة واحدة للمنتج/الخدمة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'commission')">
+                                <input type="checkbox" name="revenue_model" value="commission">
+                                <span class="option-emoji">🤝</span>
+                                <span class="option-text">عمولة من المعاملات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'advertising')">
+                                <input type="checkbox" name="revenue_model" value="advertising">
+                                <span class="option-emoji">📢</span>
+                                <span class="option-text">الإعلانات</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'freemium')">
+                                <input type="checkbox" name="revenue_model" value="freemium">
+                                <span class="option-emoji">🆓</span>
+                                <span class="option-text">نموذج مجاني مع خدمات مدفوعة</span>
+                            </div>
+                            <div class="option-item" onclick="selectCheckbox(this, 'revenue_model', 'licensing')">
+                                <input type="checkbox" name="revenue_model" value="licensing">
+                                <span class="option-emoji">📜</span>
+                                <span class="option-text">ترخيص التقنية للآخرين</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل تفضل العمل بمفردك أم مع فريق؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'team_preference', 'team')">
+                                <div>👥 مع فريق</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">أفضل العمل الجماعي</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'team_preference', 'solo')">
+                                <div>🧑‍💼 بمفردي</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">أفضل العمل المستقل</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القسم الخامس: الأثر والطموح -->
+                <div class="section" data-section="5">
+                    <h2 class="section-title">🌟 الأثر والطموح</h2>
+                    <p class="section-description">ما هو الأثر الذي تريد تركه في المجتمع؟</p>
+                    
+                    <div class="question-group">
+                        <div class="question-title">ما هو الأثر الأهم الذي تريد تحقيقه؟</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'job_creation')">
+                                <input type="radio" name="desired_impact" value="job_creation">
+                                <span class="option-emoji">💼</span>
+                                <span class="option-text">خلق فرص عمل</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'education_improvement')">
+                                <input type="radio" name="desired_impact" value="education_improvement">
+                                <span class="option-emoji">📚</span>
+                                <span class="option-text">تحسين التعليم</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'health_wellness')">
+                                <input type="radio" name="desired_impact" value="health_wellness">
+                                <span class="option-emoji">💪</span>
+                                <span class="option-text">تعزيز الصحة والعافية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'environmental')">
+                                <input type="radio" name="desired_impact" value="environmental">
+                                <span class="option-emoji">🌱</span>
+                                <span class="option-text">حماية البيئة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'social_connection')">
+                                <input type="radio" name="desired_impact" value="social_connection">
+                                <span class="option-emoji">🤝</span>
+                                <span class="option-text">تقوية الروابط الاجتماعية</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'economic_growth')">
+                                <input type="radio" name="desired_impact" value="economic_growth">
+                                <span class="option-emoji">📈</span>
+                                <span class="option-text">النمو الاقتصادي</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'cultural_preservation')">
+                                <input type="radio" name="desired_impact" value="cultural_preservation">
+                                <span class="option-emoji">🏛️</span>
+                                <span class="option-text">الحفاظ على الثقافة والتراث</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'desired_impact', 'innovation')">
+                                <input type="radio" name="desired_impact" value="innovation">
+                                <span class="option-emoji">💡</span>
+                                <span class="option-text">دفع عجلة الابتكار</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل تهتم بأن يكون مشروعك متوافقاً مع رؤية السعودية 2030؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'vision_2030_alignment', 'true')">
+                                <div>✅ نعم</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">أريد المساهمة في تحقيق الرؤية</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'vision_2030_alignment', 'false')">
+                                <div>❌ لا</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">لست مهتماً بهذا الجانب</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">ما هو مستوى طموحك للمشروع؟</div>
+                        <div class="options-grid">
+                            <div class="option-item" onclick="selectRadio(this, 'ambition_level', 'local')">
+                                <input type="radio" name="ambition_level" value="local">
+                                <span class="option-emoji">🏘️</span>
+                                <span class="option-text">مشروع محلي في منطقتي</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'ambition_level', 'national')">
+                                <input type="radio" name="ambition_level" value="national">
+                                <span class="option-emoji">🇸🇦</span>
+                                <span class="option-text">مشروع على مستوى المملكة</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'ambition_level', 'regional')">
+                                <input type="radio" name="ambition_level" value="regional">
+                                <span class="option-emoji">🌍</span>
+                                <span class="option-text">مشروع إقليمي (الخليج/العالم العربي)</span>
+                            </div>
+                            <div class="option-item" onclick="selectRadio(this, 'ambition_level', 'global')">
+                                <input type="radio" name="ambition_level" value="global">
+                                <span class="option-emoji">🌎</span>
+                                <span class="option-text">مشروع عالمي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <div class="question-title">هل أنت مستعد للمخاطرة والاستثمار في فكرتك؟</div>
+                        <div class="true-false-container">
+                            <div class="tf-option true" onclick="selectTrueFalse(this, 'risk_tolerance', 'true')">
+                                <div>✅ نعم</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">مستعد للمخاطرة المحسوبة</div>
+                            </div>
+                            <div class="tf-option false" onclick="selectTrueFalse(this, 'risk_tolerance', 'false')">
+                                <div>❌ لا</div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">أفضل البدء بحذر</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم النتائج -->
+                <div class="section" data-section="6">
+                    <h2 class="section-title">🎉 النتيجة النهائية</h2>
+                    <p class="section-description">تم إنشاء الـ Prompt الخاص بك! انسخه واستخدمه في ChatGPT أو أي منصة ذكاء اصطناعي</p>
+                    
+                    <div class="result-section">
+                        <h3 style="color: #2c3e50; margin-bottom: 20px;">الـ Prompt الجاهز للاستخدام:</h3>
+                        <div class="prompt-output" id="promptOutput"></div>
+                        
+                        <div class="result-actions">
+                            <button type="button" class="btn copy-btn" onclick="copyPrompt()">📋 نسخ الـ Prompt</button>
+                            
+                            <div class="social-media-section">
+                                <span style="color: #7f8c8d; font-weight: 600;">تابعني على:</span>
+                                <a href="https://x.com/algw007" target="_blank" class="social-link twitter">
+                                    <span>𝕏</span>
+                                    <span>algw007</span>
+                                </a>
+                                <a href="https://www.tiktok.com/@top.one.sa" target="_blank" class="social-link tiktok">
+                                    <span>🎵</span>
+                                    <span>top.one.sa</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div id="copySuccess" class="success-message" style="display: none;">تم نسخ الـ Prompt بنجاح! 🎉</div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <div class="section-counter">
+                        <span id="currentSection">1</span> من <span id="totalSections">5</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousSection()" style="display: none;">السابق</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextSection()">التالي</button>
+                        <button type="button" class="btn btn-primary" id="generateBtn" onclick="generatePrompt()" style="display: none;">إنشاء الـ Prompt</button>
+                    </div>
+                </div>
+                
+                <div class="validation-error" id="validationError"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentSectionIndex = 1;
+        const totalSections = 5;
+
+        function updateProgress() {
+            const progress = (currentSectionIndex / totalSections) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSection(sectionIndex) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show current section
+            document.querySelector(`[data-section="${sectionIndex}"]`).classList.add('active');
+            
+            // Update navigation
+            document.getElementById('currentSection').textContent = sectionIndex;
+            document.getElementById('prevBtn').style.display = sectionIndex > 1 ? 'inline-block' : 'none';
+            
+            if (sectionIndex < totalSections) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('generateBtn').style.display = 'none';
+            } else if (sectionIndex === totalSections) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('generateBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('generateBtn').style.display = 'none';
+            }
+            
+            updateProgress();
+        }
+
+        function selectRadio(element, name, value) {
+            // Remove selected class from all options in this group
+            const group = element.closest('.question-group');
+            group.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Set the radio button
+            element.querySelector('input[type="radio"]').checked = true;
+            
+            // Show/hide conditional inputs
+            handleConditionalInputs(name, value);
+        }
+
+        function selectCheckbox(element, name, value) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            
+            if (checkbox.checked) {
+                checkbox.checked = false;
+                element.classList.remove('selected');
+            } else {
+                checkbox.checked = true;
+                element.classList.add('selected');
+            }
+            
+            // Handle conditional inputs for checkboxes
+            handleConditionalInputs(name, value);
+        }
+
+        function selectTrueFalse(element, name, value) {
+            // Remove selected class from both options
+            const container = element.closest('.true-false-container');
+            container.querySelectorAll('.tf-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Create hidden input to store the value
+            let hiddenInput = document.querySelector(`input[name="${name}"]`);
+            if (!hiddenInput) {
+                hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = name;
+                document.getElementById('entrepreneurshipForm').appendChild(hiddenInput);
+            }
+            hiddenInput.value = value;
+            
+            // Handle conditional inputs
+            handleConditionalInputs(name, value);
+        }
+
+        function handleConditionalInputs(name, value) {
+            // Handle conditional inputs based on selections
+            const conditionalMappings = {
+                'academic_field': 'other',
+                'strengths': 'other',
+                'work_experience': 'true',
+                'daily_needs': 'other',
+                'society_needs': 'other',
+                'passion_field': 'other',
+                'interesting_tech': 'other',
+                'target_audience': 'other',
+                'solution_type': 'other'
+            };
+            
+            if (conditionalMappings[name]) {
+                const conditionalElement = document.getElementById(`${name}_${conditionalMappings[name] === 'true' ? 'details' : 'other'}`);
+                if (conditionalElement) {
+                    if (value === conditionalMappings[name] || (name === 'work_experience' && value === 'true')) {
+                        conditionalElement.classList.add('show');
+                    } else if (name !== 'strengths' && name !== 'daily_needs' && name !== 'society_needs' && name !== 'interesting_tech' && name !== 'target_audience') {
+                        conditionalElement.classList.remove('show');
+                    }
+                }
+            }
+            
+            // Special handling for multi-select checkboxes
+            if (['strengths', 'daily_needs', 'society_needs', 'interesting_tech', 'target_audience'].includes(name)) {
+                const conditionalElement = document.getElementById(`${name}_other`);
+                if (conditionalElement) {
+                    const otherCheckbox = document.querySelector(`input[name="${name}"][value="other"]`);
+
+
+                    if (otherCheckbox && otherCheckbox.checked) {
+                        conditionalElement.classList.add('show');
+                    } else {
+                        conditionalElement.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function validateSection(sectionIndex) {
+            const section = document.querySelector(`[data-section="${sectionIndex}"]`);
+            const errorElement = document.getElementById('validationError');
+            let isValid = true;
+            let errorMessage = '';
+
+            // Clear previous error
+            errorElement.style.display = 'none';
+
+            if (sectionIndex === 1) {
+                // Check academic field
+                const academicField = document.querySelector('input[name="academic_field"]:checked');
+                if (!academicField) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار مجال دراستك أو اهتمامك الأكاديمي';
+                } else if (academicField.value === 'other') {
+                    const otherText = document.querySelector('input[name="academic_field_other_text"]').value.trim();
+                    if (!otherText) {
+                        isValid = false;
+                        errorMessage = 'يرجى تحديد مجال دراستك';
+                    }
+                }
+
+                // Check strengths
+                const strengths = document.querySelectorAll('input[name="strengths"]:checked');
+                if (strengths.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار نقطة قوة واحدة على الأقل';
+                } else {
+                    const otherStrength = document.querySelector('input[name="strengths"][value="other"]:checked');
+                    if (otherStrength) {
+                        const otherText = document.querySelector('input[name="strengths_other_text"]').value.trim();
+                        if (!otherText) {
+                            isValid = false;
+                            errorMessage = 'يرجى تحديد نقاط قوتك الأخرى';
+                        }
+                    }
+                }
+
+                // Check work experience
+                const workExperience = document.querySelector('input[name="work_experience"]');
+                if (!workExperience) {
+                    isValid = false;
+                    errorMessage = 'يرجى الإجابة على سؤال الخبرة العملية';
+                } else if (workExperience.value === 'true') {
+                    const experienceText = document.querySelector('input[name="work_experience_text"]').value.trim();
+                    if (!experienceText) {
+                        isValid = false;
+                        errorMessage = 'يرجى ذكر خبراتك السابقة';
+                    }
+                }
+            }
+
+            if (sectionIndex === 2) {
+                // Check daily needs
+                const dailyNeeds = document.querySelectorAll('input[name="daily_needs"]:checked');
+                if (dailyNeeds.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار حاجة واحدة على الأقل من الحاجات اليومية';
+                } else {
+                    const otherNeed = document.querySelector('input[name="daily_needs"][value="other"]:checked');
+                    if (otherNeed) {
+                        const otherText = document.querySelector('input[name="daily_needs_other_text"]').value.trim();
+                        if (!otherText) {
+                            isValid = false;
+                            errorMessage = 'يرجى تحديد الحاجات الأخرى';
+                        }
+                    }
+                }
+
+                // Check need affects others
+                const needAffectsOthers = document.querySelector('input[name="need_affects_others"]');
+                if (!needAffectsOthers) {
+                    isValid = false;
+                    errorMessage = 'يرجى الإجابة على سؤال تأثير الحاجة على الآخرين';
+                }
+
+                // Check society needs
+                const societyNeeds = document.querySelectorAll('input[name="society_needs"]:checked');
+                if (societyNeeds.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار حاجة واحدة على الأقل من الحاجات المجتمعية';
+                } else {
+                    const otherSocietyNeed = document.querySelector('input[name="society_needs"][value="other"]:checked');
+                    if (otherSocietyNeed) {
+                        const otherText = document.querySelector('input[name="society_needs_other_text"]').value.trim();
+                        if (!otherText) {
+                            isValid = false;
+                            errorMessage = 'يرجى تحديد الحاجات المجتمعية الأخرى';
+                        }
+                    }
+                }
+            }
+
+            if (sectionIndex === 3) {
+                // Check passion field
+                const passionField = document.querySelector('input[name="passion_field"]:checked');
+                if (!passionField) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار مجال شغفك';
+                } else if (passionField.value === 'other') {
+                    const otherText = document.querySelector('input[name="passion_field_other_text"]').value.trim();
+                    if (!otherText) {
+                        isValid = false;
+                        errorMessage = 'يرجى تحديد مجال شغفك';
+                    }
+                }
+
+                // Check follows startups
+                const followsStartups = document.querySelector('input[name="follows_startups"]');
+                if (!followsStartups) {
+                    isValid = false;
+                    errorMessage = 'يرجى الإجابة على سؤال متابعة الشركات الناشئة';
+                }
+
+                // Check interesting tech
+                const interestingTech = document.querySelectorAll('input[name="interesting_tech"]:checked');
+                if (interestingTech.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار تقنية واحدة على الأقل';
+                } else {
+                    const otherTech = document.querySelector('input[name="interesting_tech"][value="other"]:checked');
+                    if (otherTech) {
+                        const otherText = document.querySelector('input[name="interesting_tech_other_text"]').value.trim();
+                        if (!otherText) {
+                            isValid = false;
+                            errorMessage = 'يرجى تحديد التقنيات الأخرى';
+                        }
+                    }
+                }
+            }
+
+            if (sectionIndex === 4) {
+                // Check target audience
+                const targetAudience = document.querySelectorAll('input[name="target_audience"]:checked');
+                if (targetAudience.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار فئة واحدة على الأقل لخدمتها';
+                } else {
+                    const otherAudience = document.querySelector('input[name="target_audience"][value="other"]:checked');
+                    if (otherAudience) {
+                        const otherText = document.querySelector('input[name="target_audience_other_text"]').value.trim();
+                        if (!otherText) {
+                            isValid = false;
+                            errorMessage = 'يرجى تحديد الفئة المستهدفة';
+                        }
+                    }
+                }
+
+                // Check solution type
+                const solutionType = document.querySelector('input[name="solution_type"]:checked');
+                if (!solutionType) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار نوع الحل المفضل';
+                } else if (solutionType.value === 'other') {
+                    const otherText = document.querySelector('input[name="solution_type_other_text"]').value.trim();
+                    if (!otherText) {
+                        isValid = false;
+                        errorMessage = 'يرجى تحديد نوع الحل';
+                    }
+                }
+
+                // Check revenue model
+                const revenueModel = document.querySelectorAll('input[name="revenue_model"]:checked');
+                if (revenueModel.length === 0) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار طريقة واحدة على الأقل لتحقيق الدخل';
+                }
+
+                // Check team preference
+                const teamPreference = document.querySelector('input[name="team_preference"]');
+                if (!teamPreference) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار تفضيلك للعمل (فريق أم فردي)';
+                }
+            }
+
+            if (sectionIndex === 5) {
+                // Check desired impact
+                const desiredImpact = document.querySelector('input[name="desired_impact"]:checked');
+                if (!desiredImpact) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار الأثر المرغوب تحقيقه';
+                }
+
+                // Check vision 2030 alignment
+                const vision2030 = document.querySelector('input[name="vision_2030_alignment"]');
+                if (!vision2030) {
+                    isValid = false;
+                    errorMessage = 'يرجى الإجابة على سؤال التوافق مع رؤية 2030';
+                }
+
+                // Check ambition level
+                const ambitionLevel = document.querySelector('input[name="ambition_level"]:checked');
+                if (!ambitionLevel) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار مستوى طموحك للمشروع';
+                }
+
+                // Check risk tolerance
+                const riskTolerance = document.querySelector('input[name="risk_tolerance"]');
+                if (!riskTolerance) {
+                    isValid = false;
+                    errorMessage = 'يرجى الإجابة على سؤال الاستعداد للمخاطرة';
+                }
+            }
+
+            if (!isValid) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+                errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            return isValid;
+        }
+
+        function nextSection() {
+            if (validateSection(currentSectionIndex)) {
+                if (currentSectionIndex < totalSections) {
+                    currentSectionIndex++;
+                    showSection(currentSectionIndex);
+                }
+            }
+        }
+
+        function previousSection() {
+            if (currentSectionIndex > 1) {
+                currentSectionIndex--;
+                showSection(currentSectionIndex);
+            }
+        }
+
+        function generatePrompt() {
+            if (!validateSection(currentSectionIndex)) {
+                return;
+            }
+
+            const formData = new FormData(document.getElementById('entrepreneurshipForm'));
+            let prompt = `أريدك أن تلعب دور خبير في استراتيجيات الابتكار وتطوير الأعمال متخصص في السوق السعودي. سأزودك بأهتماماتي الشخصية والحاجات العامة وبعد تحليل هذه البيانات بعمق اقتراح لي 3 أفكار لمشاريع ريادية مختلفة ومفصلة تكون قابلة للتطبيق في المملكة العربية السعودية ومتماشية مع رؤية 2030.
+
+أنا طالب سعودي أبحث عن أفكار ريادية مناسبة لي. إليك معلوماتي الشخصية والاهتمامات:
+
+## الملف الشخصي:
+`;
+
+            // Academic field
+            const academicField = formData.get('academic_field');
+            const academicFieldLabels = {
+                'technology': 'التقنية والحاسوب',
+                'business': 'إدارة الأعمال والاقتصاد',
+                'health': 'الطب والعلوم الصحية',
+                'engineering': 'الهندسة',
+                'education': 'التعليم والتربية',
+                'arts': 'الفنون والتصميم',
+                'social': 'العلوم الاجتماعية',
+                'other': formData.get('academic_field_other_text') || 'مجال آخر'
+            };
+            prompt += `- مجال الدراسة: ${academicFieldLabels[academicField]}\n`;
+
+            // Strengths
+            const strengths = formData.getAll('strengths');
+            const strengthLabels = {
+                'communication': 'التواصل والإقناع',
+                'creativity': 'الإبداع والابتكار',
+                'technical': 'المهارات التقنية',
+                'leadership': 'القيادة والتنظيم',
+                'analysis': 'التحليل وحل المشكلات',
+                'marketing': 'التسويق والمبيعات',
+                'other': formData.get('strengths_other_text') || 'مهارات أخرى'
+            };
+            const strengthsList = strengths.map(s => strengthLabels[s]).join('، ');
+            prompt += `- نقاط القوة: ${strengthsList}\n`;
+
+            // Work experience
+            const workExperience = formData.get('work_experience');
+            if (workExperience === 'true') {
+                prompt += `- الخبرة العملية: ${formData.get('work_experience_text')}\n`;
+            } else {
+                prompt += `- الخبرة العملية: لا توجد خبرة سابقة\n`;
+            }
+
+            prompt += `\n## الحاجات والتحديات:
+`;
+
+            // Daily needs
+            const dailyNeeds = formData.getAll('daily_needs');
+            const dailyNeedsLabels = {
+                'transportation': 'المواصلات والتنقل',
+                'food': 'الطعام الصحي والمناسب',
+                'study': 'الدراسة والتعلم',
+                'shopping': 'التسوق والحصول على الاحتياجات',
+                'health': 'الصحة واللياقة',
+                'entertainment': 'الترفيه والأنشطة',
+                'financial': 'إدارة المال والمصروف',
+                'social': 'التواصل الاجتماعي',
+                'other': formData.get('daily_needs_other_text') || 'حاجات أخرى'
+            };
+            const dailyNeedsList = dailyNeeds.map(n => dailyNeedsLabels[n]).join('، ');
+            prompt += `- الحاجات اليومية: ${dailyNeedsList}\n`;
+
+            // Need affects others
+            const needAffectsOthers = formData.get('need_affects_others');
+            prompt += `- طبيعة الحاجة: ${needAffectsOthers === 'true' ? 'حاجة عامة يعاني منها الكثيرون' : 'حاجة شخصية خاصة بي'}\n`;
+
+            // Society needs
+            const societyNeeds = formData.getAll('society_needs');
+            const societyNeedsLabels = {
+                'education_quality': 'جودة التعليم',
+                'job_opportunities': 'فرص العمل للشباب',
+                'healthcare_access': 'سهولة الوصول للخدمات الصحية',
+                'transportation': 'المواصلات العامة',
+                'environment': 'البيئة والاستدامة',
+                'digital_literacy': 'الثقافة الرقمية',
+                'other': formData.get('society_needs_other_text') || 'حاجات مجتمعية أخرى'
+            };
+            const societyNeedsList = societyNeeds.map(n => societyNeedsLabels[n]).join('، ');
+            prompt += `- الحاجات المجتمعية المهمة: ${societyNeedsList}\n`;
+
+            prompt += `\n## الاهتمامات والفرص:
+`;
+
+            // Passion field
+            const passionField = formData.get('passion_field');
+            const passionFieldLabels = {
+                'technology': 'التقنية والذكاء الاصطناعي',
+                'health_fitness': 'الصحة واللياقة',
+                'education': 'التعليم وتطوير المهارات',
+                'environment': 'البيئة والاستدامة',
+                'entertainment': 'الترفيه والثقافة',
+                'social_impact': 'الأثر الاجتماعي والخير',
+                'business': 'الأعمال والتجارة',
+                'food': 'الطعام والضيافة',
+                'other': formData.get('passion_field_other_text') || 'مجال آخر'
+            };
+            prompt += `- مجال الشغف: ${passionFieldLabels[passionField]}\n`;
+
+            // Follows startups
+            const followsStartups = formData.get('follows_startups');
+            prompt += `- متابعة الشركات الناشئة: ${followsStartups === 'true' ? 'نعم، أتابع أخبار الشركات الناشئة' : 'لا، لا أتابع هذا المجال كثيراً'}\n`;
+
+            // Interesting tech
+            const interestingTech = formData.getAll('interesting_tech');
+            const interestingTechLabels = {
+                'ai': 'الذكاء الاصطناعي',
+                'mobile_apps': 'تطبيقات الهاتف',
+                'ecommerce': 'التجارة الإلكترونية',
+                'iot': 'إنترنت الأشياء',
+                'vr_ar': 'الواقع المعزز والافتراضي',
+                'blockchain': 'البلوك تشين',
+                'other': formData.get('interesting_tech_other_text') || 'تقنيات أخرى'
+            };
+            const interestingTechList = interestingTech.map(t => interestingTechLabels[t]).join('، ');
+            prompt += `- التقنيات المثيرة: ${interestingTechList}\n`;
+
+            prompt += `\n## نموذج العمل والهدف:
+`;
+
+            // Target audience
+            const targetAudience = formData.getAll('target_audience');
+            const targetAudienceLabels = {
+                'students': 'الطلاب والشباب',
+                'families': 'العائلات',
+                'professionals': 'المهنيون وأصحاب الأعمال',
+                'elderly': 'كبار السن',
+                'general_public': 'عموم الناس',
+                'businesses': 'الشركات والمؤسسات',
+                'other': formData.get('target_audience_other_text') || 'فئة أخرى'
+            };
+            const targetAudienceList = targetAudience.map(a => targetAudienceLabels[a]).join('، ');
+            prompt += `- الفئة المستهدفة: ${targetAudienceList}\n`;
+
+            // Solution type
+            const solutionType = formData.get('solution_type');
+            const solutionTypeLabels = {
+                'digital_service': 'خدمة رقمية (تطبيق/موقع)',
+                'physical_product': 'منتج مادي',
+                'consulting_service': 'خدمة استشارية',
+                'marketplace': 'منصة تجمع البائعين والمشترين',
+                'educational_content': 'محتوى تعليمي',
+                'community_platform': 'منصة مجتمعية',
+                'other': formData.get('solution_type_other_text') || 'نوع حل آخر'
+            };
+            prompt += `- نوع الحل المفضل: ${solutionTypeLabels[solutionType]}\n`;
+
+            // Revenue model
+            const revenueModel = formData.getAll('revenue_model');
+            const revenueModelLabels = {
+                'subscription': 'اشتراك شهري/سنوي',
+                'one_time_payment': 'دفعة واحدة للمنتج/الخدمة',
+                'commission': 'عمولة من المعاملات',
+                'advertising': 'الإعلانات',
+                'freemium': 'نموذج مجاني مع خدمات مدفوعة',
+                'licensing': 'ترخيص التقنية للآخرين'
+            };
+            const revenueModelList = revenueModel.map(r => revenueModelLabels[r]).join('، ');
+            prompt += `- نموذج الربح: ${revenueModelList}\n`;
+
+            // Team preference
+            const teamPreference = formData.get('team_preference');
+            prompt += `- تفضيل العمل: ${teamPreference === 'team' ? 'مع فريق - أفضل العمل الجماعي' : 'بمفردي - أفضل العمل المستقل'}\n`;
+
+            prompt += `\n## الأثر والطموح:
+`;
+
+            // Desired impact
+            const desiredImpact = formData.get('desired_impact');
+            const desiredImpactLabels = {
+                'job_creation': 'خلق فرص عمل',
+                'education_improvement': 'تحسين التعليم',
+                'health_wellness': 'تعزيز الصحة والعافية',
+                'environmental': 'حماية البيئة',
+                'social_connection': 'تقوية الروابط الاجتماعية',
+                'economic_growth': 'النمو الاقتصادي',
+                'cultural_preservation': 'الحفاظ على الثقافة والتراث',
+                'innovation': 'دفع عجلة الابتكار'
+            };
+            prompt += `- الأثر المرغوب: ${desiredImpactLabels[desiredImpact]}\n`;
+
+            // Vision 2030 alignment
+            const vision2030 = formData.get('vision_2030_alignment');
+            prompt += `- التوافق مع رؤية 2030: ${vision2030 === 'true' ? 'نعم، أريد المساهمة في تحقيق الرؤية' : 'لست مهتماً بهذا الجانب'}\n`;
+
+            // Ambition level
+            const ambitionLevel = formData.get('ambition_level');
+            const ambitionLevelLabels = {
+                'local': 'مشروع محلي في منطقتي',
+                'national': 'مشروع على مستوى المملكة',
+                'regional': 'مشروع إقليمي (الخليج/العالم العربي)',
+                'global': 'مشروع عالمي'
+            };
+            prompt += `- مستوى الطموح: ${ambitionLevelLabels[ambitionLevel]}\n`;
+
+            // Risk tolerance
+            const riskTolerance = formData.get('risk_tolerance');
+            prompt += `- الاستعداد للمخاطرة: ${riskTolerance === 'true' ? 'مستعد للمخاطرة المحسوبة' : 'أفضل البدء بحذر'}\n`;
+
+            prompt += `\n## المطلوب:
+بناءً على هذه المعلومات، أريدك أن تقترح علي 3 أفكار ريادية مناسبة لملفي الشخصي واهتماماتي. لكل فكرة، أريد:
+
+1. **اسم الفكرة ووصف مختصر**
+2. **كيف تحل الحاجة أو المشكلة المحددة**
+3. **لماذا تناسب مهاراتي واهتماماتي**
+4. **الفئة المستهدفة المحددة**
+5. **نموذج الربح المقترح**
+6. **خطوات البداية العملية (أول 3 خطوات)**
+7. **التحديات المتوقعة وكيفية التعامل معها**
+8. **إمكانية النمو والتوسع**
+
+يرجى أن تكون الأفكار:
+- قابلة للتطبيق في السعودية
+- متنوعة في مستوى التعقيد والاستثمار المطلوب
+- مرتبطة بالحاجات الفعلية التي ذكرتها
+- مناسبة لمستوى خبرتي وإمكانياتي`;
+
+            document.getElementById('promptOutput').textContent = prompt;
+            currentSectionIndex = 6;
+            showSection(currentSectionIndex);
+        }
+
+        function copyPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            navigator.clipboard.writeText(promptText).then(function() {
+                const successMessage = document.getElementById('copySuccess');
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            });
+        }
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection(1);
+        });
+    </script>
+</body>
+</html>
